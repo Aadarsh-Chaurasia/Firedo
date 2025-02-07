@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <p id="successMessage"></p>
+    <h1>TODO</h1>
+    <hr>
+
+    <div id="container">
+        <div class="input-field">
+            <label for="task">Task </label>
+            <input type="text" id="task" name="task" placeholder="Enter the Task">
+        </div>
+        <span id="msg"></span>
+
+        <button type="submit" id="addButton">Add Task</button>
+    </div>
+
+    <div class="taskContainer">
+        <ul id="tasklist"></ul>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
