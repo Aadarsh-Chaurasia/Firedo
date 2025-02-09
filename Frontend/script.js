@@ -1,7 +1,6 @@
-const button = document.getElementById("addButton");
 const API_URL = "http://localhost:3000/"
 async function postTask(task) {
-    
+
     try {
         const response = await fetch(API_URL + "api", {
             method: "POST",
@@ -17,10 +16,12 @@ async function postTask(task) {
     }
 }
 
-async function getData() {
+async function removeTask(id) {
+    const data = { id: [id] }
+    console.log(data);
     try {
         const response = await fetch(API_URL + "api", {
-            method: "GET",
+            method: "DELETE",
             headers: {
                 "content-type": "application/json",
             },
@@ -32,6 +33,52 @@ async function getData() {
         console.log(err);
     }
 }
+
+async function getData() {
+  try {
+    const response = await fetch(API_URL + "api", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
+function addElement(container, type, id, className, data) {
+    let element = document.createElement(type)
+    element.id = id;
+    element.className = className;
+    element.innerHTML = data;
+    container.appendChild(element);
+    element.addEventListener("click", () => {
+      removeTask(element.id);
+      element.remove();
+      console.log("Task removed");
+    });
+}
+
+
+function updateElement() {
+    getData().then((elements) => {
+        const taskContainer = document.getElementById("taskContainer")
+        Object.entries(elements).forEach(([key, value]) => {
+            console.log(`${key}: ${value}`);
+            addElement(taskContainer, 'button', key, 'task', value);
+        });
+    })
+        .catch((err) => {
+            console.error(err);
+        })
+}
+
+
 
 function addTask(task) {
     // Adding task to DB
@@ -45,18 +92,25 @@ function addTask(task) {
             return err.message;
         })
     // Adding task in frontend
-    let taskEl = document.createElement("li");
-    taskEl.innerHTML = `<li>${task.value}</li>`;
-    document.getElementById("tasklist").appendChild(taskEl);
+    const taskContainer = document.getElementById("taskContainer");
+    addElement(taskContainer, "button", currentTime, "task", task.value);
     task.value = '';
     return "working"
 }
 
+const button = document.getElementById("addButton");
 button.addEventListener("click", () => {
     let task = document.getElementById("task");
+    if (task.value === ''){
+        return
+    }
     const res = addTask(task);
     const resMsg = document.getElementById("msg");
     resMsg.innerHTML = `<span id="msg">${res}!</span>`;
 
     console.log(task);
 });
+
+updateElement([]);  // Call the function with an empty array
+
+
