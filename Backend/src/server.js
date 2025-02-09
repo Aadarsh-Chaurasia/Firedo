@@ -15,6 +15,12 @@ app.use(express.json());
 app.post('/api', (req, res) => {
     reqHandler(req, res);
 });
+app.get('/api', (req, res) => {
+    reqHandler(req, res);
+});
+app.delete('/api', (req, res) => {
+    reqHandler(req, res);
+});
 
 
 // Start server
